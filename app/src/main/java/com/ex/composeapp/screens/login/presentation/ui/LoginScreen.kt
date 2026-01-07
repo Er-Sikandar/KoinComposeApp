@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.*
 import com.ex.composeapp.screens.login.presentation.LoginViewModel
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.ex.composeapp.utils.Helper.appLogger
 import com.ex.composeapp.utils.Helper.showToast
@@ -31,10 +32,7 @@ fun LoginScreen(modifier: Modifier,viewModel: LoginViewModel = koinViewModel()) 
         }
     }
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center
+        modifier = modifier.fillMaxSize().padding(12.dp),
     ) {
 
         Text("Login", fontSize = 28.sp, fontWeight = FontWeight.Bold)
