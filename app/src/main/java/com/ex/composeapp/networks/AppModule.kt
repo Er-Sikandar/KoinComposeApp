@@ -32,7 +32,6 @@ val appModule = module {
         get<Retrofit>().create(ApiService::class.java)
     }
 
-   // single { LoginRepo(get()) }
     single<LoginRepo> { LoginRepoImpl(get()) }
 
     viewModel { LoginViewModel(get()) }

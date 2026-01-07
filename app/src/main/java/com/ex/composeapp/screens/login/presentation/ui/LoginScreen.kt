@@ -1,8 +1,10 @@
 package com.ex.composeapp.screens.login.presentation.ui
 
+import android.text.TextUtils
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -10,10 +12,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.*
 import com.ex.composeapp.screens.login.presentation.LoginViewModel
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import com.ex.composeapp.utils.Helper.appLogger
+import com.ex.composeapp.utils.Helper.showToast
 
 @Composable
 fun LoginScreen(modifier: Modifier,viewModel: LoginViewModel = koinViewModel()) {
-    val state = viewModel.state
+    val context = LocalContext.current
+    LaunchedEffect(viewModel.errorMessage) {
+        if (!TextUtils.isEmpty(viewModel.errorMessage)){
+            showToast(context,viewModel.errorMessage)
+            appLogger(viewModel.errorMessage)
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -26,7 +38,7 @@ fun LoginScreen(modifier: Modifier,viewModel: LoginViewModel = koinViewModel()) 
         Spacer(Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = state.email,
+            value = viewModel.state.email.toString(),
             onValueChange = viewModel::onEmailChange,
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
@@ -35,7 +47,7 @@ fun LoginScreen(modifier: Modifier,viewModel: LoginViewModel = koinViewModel()) 
         Spacer(Modifier.height(12.dp))
 
         OutlinedTextField(
-            value = state.password,
+            value = viewModel.state.password.toString(),
             onValueChange = viewModel::onPasswordChange,
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
@@ -47,19 +59,10 @@ fun LoginScreen(modifier: Modifier,viewModel: LoginViewModel = koinViewModel()) 
         Button(
             onClick = { viewModel.login() },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !state.isLoading
+            enabled = !viewModel.isFetching.collectAsState().value
         ) {
-            Text(if (state.isLoading) "Logging in..." else "Login")
+            Text(if (viewModel.isFetching.collectAsState().value) "Logging in..." else "Login")
         }
 
-        Spacer(Modifier.height(12.dp))
-
-        state.error?.let {
-            Text(it, color = Color.Red)
-        }
-
-        if (state.success) {
-            Text("Login successful ✅", color = Color.Green)
-        }
     }
 }
