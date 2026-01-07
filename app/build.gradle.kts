@@ -84,5 +84,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     // ViewModel
     implementation(libs.lifecycle.viewmodel.compose)
+    //EncPrefs
+    implementation(libs.androidx.security.crypto)
 
 }

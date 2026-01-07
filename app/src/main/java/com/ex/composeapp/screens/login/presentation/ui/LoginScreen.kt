@@ -19,11 +19,15 @@ import com.ex.composeapp.utils.Helper.showToast
 
 @Composable
 fun LoginScreen(modifier: Modifier,viewModel: LoginViewModel = koinViewModel()) {
+    val savedToken = viewModel.savedToken
     val context = LocalContext.current
-    LaunchedEffect(viewModel.errorMessage) {
+    LaunchedEffect(viewModel.errorMessage,savedToken) {
         if (!TextUtils.isEmpty(viewModel.errorMessage)){
             showToast(context,viewModel.errorMessage)
             appLogger(viewModel.errorMessage)
+        }
+        if (savedToken.isNotEmpty()){
+            appLogger(savedToken)
         }
     }
     Column(

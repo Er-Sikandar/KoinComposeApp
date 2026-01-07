@@ -9,7 +9,7 @@ object Helper {
         Toast.makeText(context, message,Toast.LENGTH_SHORT).show()
     }
     fun appLogger(message: String, tag: String = "TAG") {
-        Log.e(tag, message)
+        Log.e(tag, "Log: $message")
     }
 
 }

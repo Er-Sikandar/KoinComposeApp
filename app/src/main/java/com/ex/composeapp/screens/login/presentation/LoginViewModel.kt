@@ -9,11 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.ex.composeapp.screens.login.data.LoginResponse
 import com.ex.composeapp.screens.login.domain.LoginRepo
 import com.ex.composeapp.screens.login.domain.LoginRequest
+import com.ex.composeapp.utils.Const
+import com.ex.composeapp.utils.EncPrefs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginRepo: LoginRepo) : ViewModel() {
+class LoginViewModel(private val loginRepo: LoginRepo, private val encPrefs: EncPrefs) : ViewModel() {
     private val _isFetching = MutableStateFlow(false)
     val isFetching = _isFetching.asStateFlow()
     var state by mutableStateOf(LoginRequest("",""))
@@ -23,12 +25,22 @@ class LoginViewModel(private val loginRepo: LoginRepo) : ViewModel() {
     var loginRes by mutableStateOf(LoginResponse())
         private set
 
+    var savedToken by mutableStateOf("")
+        private set
+
     fun onEmailChange(value: String) {
         state = state.copy(email = value)
     }
 
     fun onPasswordChange(value: String) {
         state = state.copy(password = value)
+    }
+
+    init {
+        loadToken()
+    }
+    fun loadToken() {
+        savedToken = encPrefs.getPrefsString(Const.ACCESS_TOKEN)
     }
 
     fun login() {
@@ -52,7 +64,9 @@ class LoginViewModel(private val loginRepo: LoginRepo) : ViewModel() {
              result.fold(
                 onSuccess = {
                     it?.let {
-                        loginRes.copy(access_token =it.access_token,refresh_token=it.refresh_token )
+                        savedToken=it.access_token.toString()
+                        loginRes.copy(access_token =savedToken,refresh_token=it.refresh_token)
+                         encPrefs.setPrefsString(Const.ACCESS_TOKEN,savedToken)
                     }
                     _isFetching.value=false
                 },
