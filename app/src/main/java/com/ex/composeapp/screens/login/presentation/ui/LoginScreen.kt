@@ -34,49 +34,54 @@ fun LoginScreen(onNavigateSignUp:()-> Unit,onNavigateHome:()-> Unit, viewModel: 
             onNavigateHome()
         }
     }
-    Column(
-        modifier = Modifier.fillMaxSize().padding(12.dp),
-    ) {
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Surface(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(12.dp),
+            ) {
 
-        Text("Login", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Text("Login", fontSize = 28.sp, fontWeight = FontWeight.Bold)
 
-        Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(20.dp))
 
-        OutlinedTextField(
-            value = viewModel.state.email,
-            onValueChange = viewModel::onEmailChange,
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
-        )
+                OutlinedTextField(
+                    value = viewModel.state.email,
+                    onValueChange = viewModel::onEmailChange,
+                    label = { Text("Email") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-        OutlinedTextField(
-            value = viewModel.state.password,
-            onValueChange = viewModel::onPasswordChange,
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
-        )
+                OutlinedTextField(
+                    value = viewModel.state.password,
+                    onValueChange = viewModel::onPasswordChange,
+                    label = { Text("Password") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        Spacer(Modifier.height(35.dp))
+                Spacer(Modifier.height(35.dp))
 
-        Button(
-            onClick = { viewModel.login() },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !viewModel.isFetching.collectAsState().value
-        ) {
-            Text(if (viewModel.isFetching.collectAsState().value) "Logging in..." else "Login")
-        }
-        Spacer(Modifier.height(20.dp))
-        Text("SignUp",
-            fontSize = 14.sp, color = App_Color,
-            fontWeight = FontWeight.Normal,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().clickable{
-                onNavigateSignUp()
+                Button(
+                    onClick = { viewModel.login() },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !viewModel.isFetching.collectAsState().value
+                ) {
+                    Text(if (viewModel.isFetching.collectAsState().value) "Logging in..." else "Login")
+                }
+                Spacer(Modifier.height(20.dp))
+                Text(
+                    "SignUp",
+                    fontSize = 14.sp, color = App_Color,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().clickable {
+                        onNavigateSignUp()
+                    }
+                )
+
             }
-        )
-
+        }
     }
 }

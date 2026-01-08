@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,21 +55,23 @@ fun DashboardScreen(onNavigateHomeToLogin:()-> Unit,onExitApp:()-> Unit) {
             }
         )
     }
-
-    Column(
-        modifier = Modifier.fillMaxSize().padding(12.dp),
-    ) {
-        Button(
-            onClick = {
-                showLogoutDialog=true
-                  },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = true
-        ) {
-            Text( "Logout")
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Surface(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(12.dp),
+            ) {
+                Button(
+                    onClick = {
+                        showLogoutDialog = true
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = true
+                ) {
+                    Text("Logout")
+                }
+            }
         }
     }
-
 
     /**
      * Double click back here..

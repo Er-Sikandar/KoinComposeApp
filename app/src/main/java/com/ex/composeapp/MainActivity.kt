@@ -15,9 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NewGetNavHost(Modifier.padding(innerPadding))
-                }
+                    NewGetNavHost()
             }
         }
     }

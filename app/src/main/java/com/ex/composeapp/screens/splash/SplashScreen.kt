@@ -36,6 +36,8 @@ fun SplashScreen(onNavigateToLogin: () -> Unit,
             appLogger("SplashGo Else:>> ")
         }
      }
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Surface(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -47,4 +49,6 @@ fun SplashScreen(onNavigateToLogin: () -> Unit,
                     modifier = Modifier.size(150.dp)
                 )
             }
+        }
+    }
 }

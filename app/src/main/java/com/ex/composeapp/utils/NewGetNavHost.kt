@@ -31,8 +31,8 @@ object Destinations {
 
 }
 @Composable
-fun NewGetNavHost(modifier: Modifier,navController: NavHostController = rememberNavController()) {
-    NavHost(modifier = modifier,navController = navController, startDestination = SPLASH_ROUTE) {
+fun NewGetNavHost(navController: NavHostController = rememberNavController()) {
+    NavHost(navController = navController, startDestination = SPLASH_ROUTE) {
         composable(SPLASH_ROUTE) {
             SplashScreen(
                 onNavigateToLogin = {
