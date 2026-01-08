@@ -18,6 +18,8 @@ import kotlinx.coroutines.launch
 class LoginViewModel(private val loginRepo: LoginRepo, private val encPrefs: EncPrefs) : ViewModel() {
     private val _isFetching = MutableStateFlow(false)
     val isFetching = _isFetching.asStateFlow()
+    private val _loginSuccess = MutableStateFlow(false)
+    val loginSuccess = _loginSuccess.asStateFlow()
     var state by mutableStateOf(LoginRequest("",""))
         private set
     var errorMessage by mutableStateOf("")
@@ -39,11 +41,15 @@ class LoginViewModel(private val loginRepo: LoginRepo, private val encPrefs: Enc
     init {
         loadToken()
     }
+
+
+
     fun loadToken() {
         savedToken = encPrefs.getPrefsString(Const.ACCESS_TOKEN)
     }
 
     fun login() {
+        errorMessage=""
         val emailError = when {
             state.email.isBlank() -> "Email cannot be empty"
             !Patterns.EMAIL_ADDRESS.matcher(state.email).matches() -> "Enter a valid email address"
@@ -68,6 +74,8 @@ class LoginViewModel(private val loginRepo: LoginRepo, private val encPrefs: Enc
                         loginRes.copy(access_token =savedToken,refresh_token=it.refresh_token)
                          encPrefs.setPrefsString(Const.ACCESS_TOKEN,savedToken)
                     }
+                    encPrefs.setPrefsBoolean(Const.IS_LOGIN,true)
+                    _loginSuccess.value=true
                     _isFetching.value=false
                 },
                 onFailure = {
